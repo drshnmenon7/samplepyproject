@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY = 'devopsdarshan7.jfrog.io:443'
+        DOCKER_REGISTRY = 'devopsdarshan7.jfrog.io'
         IMAGE_NAME = 'darshu-docker-local/debian:bullseyedev'
     }
     stages {
