@@ -16,20 +16,41 @@ pipeline {
                 }
             }
         }
-        stage('Pull Docker Image') {
+               stage('Build Package') {
             steps {
                 sh """
-                docker pull $DOCKER_REGISTRY/$IMAGE_NAME
+                chmod +x script/build.sh
+                cd script
+                ./build.sh
                 """
             }
         }
-        stage('Run Docker Container') {
-            when { buildingTag() }
+
+        stage('Publish to Artifactory') {
             steps {
-                sh """
-                docker run -d $DOCKER_REGISTRY/$IMAGE_NAME
-                """
+                script {
+                    def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
+                    sh """
+                    curl -u${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW} \
+                        -T ${debFile} \
+                        ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/$(basename ${debFile})
+                    """
+                }
             }
         }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+}
     }
 }
