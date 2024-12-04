@@ -24,6 +24,7 @@ pipeline {
             }
         }
         stage('Run Docker Container') {
+            when { buildingTag() }
             steps {
                 sh """
                 docker run -d $DOCKER_REGISTRY/$IMAGE_NAME
