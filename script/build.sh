@@ -46,7 +46,7 @@ EOF
     cat > \${DEBIAN_DIR}/rules <<EOF
 #!/usr/bin/make -f
 %:
-$(printf "\t")dh \$@
+  \$@
 EOF
     chmod +x \${DEBIAN_DIR}/rules
 
