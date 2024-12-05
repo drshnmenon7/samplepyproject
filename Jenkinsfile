@@ -16,7 +16,7 @@ pipeline {
                 }
             }
         }
-               stage('Build Package') {
+        stage('Build Package') {
             steps {
                 sh """
                 chmod +x script/build.sh
@@ -25,16 +25,14 @@ pipeline {
                 """
             }
         }
-
         stage('Publish to Artifactory') {
-
             steps {
                 script {
                     def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
                     sh """
                     curl -u ${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW} \
                         -T ${debFile} \
-                        ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/$(basename ${debFile})
+                        ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/\$(basename ${debFile})
                     """
                 }
             }
@@ -51,7 +49,5 @@ pipeline {
         failure {
             echo 'Pipeline failed.'
         }
-    }
-}
     }
 }
