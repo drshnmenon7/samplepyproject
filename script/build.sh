@@ -47,6 +47,8 @@ EOF
 #!/usr/bin/make -f
 %:
   \$@
+clean:
+	dh_clean
 EOF
     chmod +x \${DEBIAN_DIR}/rules
 
