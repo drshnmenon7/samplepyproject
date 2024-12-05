@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -e 
+
+cd "$(dirname "$0")/.."
+
+script/bootstrap
+
+BUILD_NAME="sample-project:local"
+
+build_docker(){
+    docker build -t $BUILD_NAME -f Dockerfile .
+
+}
+
+generate_debian_changelog() {
+    echo "" > debian/changelog
+}
+
+docker run --rm \
+   -u "$(id -u)" \
+   -e "GITCHANGELOG_CONFIG_FILENAME=gitchangelog.debian.rc" \
+   -v "$$(pwd):/workspace" \
+   $BUILD_IMAGE \
+   gitchangelog
+   }
+
+generate_changelogs() {
+  echo "==> Generating changelogs..."
+  workdir=$(mktemp -dt "$(basename "$0").XXXXXX")
+  trap "rm -rf ${workdir}" EXIT
+
+  generate_debian_changelog \
+      > "${workdir}/changelog.deb.txt"
+
+  mv "${workdir}/changelog.deb.txt" debian/changelog
+}
+
+main() {
+    build_docker
+    generate_changelogs
+}
+
+main "$@"

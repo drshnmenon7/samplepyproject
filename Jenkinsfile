@@ -25,12 +25,9 @@ pipeline {
                 """
             }
         }
-<<<<<<< HEAD
 
         stage('Publish to Artifactory') {
-=======
-        stage('Run Docker Container') {
->>>>>>> 68fdaeec544ead4126255efe7a20a1c757eb6475
+
             steps {
                 script {
                     def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
