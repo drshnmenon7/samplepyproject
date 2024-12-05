@@ -9,7 +9,7 @@ OUTPUT_DIR="build-output"
 
 # Step 1: Build the Docker image
 echo "Building Docker image..."
-docker build -t python-deb-builder .
+docker build -t python-deb-builder -f Dockerfile .
 
 # Step 2: Run the Docker container to build the .deb package
 echo "Running Docker container to build the package..."
