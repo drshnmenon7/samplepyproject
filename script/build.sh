@@ -53,7 +53,8 @@ build:
 	dh_auto_build
 
 binary:
-	dh_binary
+	dh_auto_install
+	dh_builddeb
 EOF
     chmod +x \${DEBIAN_DIR}/rules
 
