@@ -51,6 +51,9 @@ clean:
 	dh_clean
 build:
 	dh_auto_build
+
+binary:
+	dh_binary
 EOF
     chmod +x \${DEBIAN_DIR}/rules
 
