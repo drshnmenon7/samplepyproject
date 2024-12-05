@@ -19,6 +19,7 @@ pipeline {
         stage('Build Package') {
             steps {
                 sh """
+                ls -R
                 chmod +x script/build.sh
                 cd script
                 ./build.sh
