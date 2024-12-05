@@ -1,0 +1,13 @@
+[Unit]
+Description=Sample Project Service
+After=network.target
+
+[Service]
+Type=simple
+User=sampleuser
+WorkingDirectory=/usr/share/samplepyproject
+ExecStart=/usr/bin/python3 /usr/share/samplepyproject/main.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

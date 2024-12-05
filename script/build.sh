@@ -1,9 +1,6 @@
 #!/bin/bash
 
-
 set -e  # Exit immediately if a command exits with a non-zero status
-
-cd "$(dirname "$0")/.."
 
 # Define project details
 PROJECT_NAME="sampleproject"
@@ -18,61 +15,18 @@ docker build -t python-deb-builder -f Dockerfile .
 echo "Running Docker container to build the package..."
 docker run --rm -v $(pwd):/workspace python-deb-builder bash -c "
     set -e
-    DEBIAN_DIR=/workspace/debian
     OUTPUT_DIR=/workspace/${OUTPUT_DIR}
 
-    echo 'Setting up debian directory...'
-    mkdir -p \${DEBIAN_DIR}
+    # Verify the debian directory exists and contains required files
+    if [ ! -d /workspace/debian ]; then
+        echo 'Error: debian directory is missing.' >&2
+        exit 1
+    fi
+    if [ ! -f /workspace/debian/control ] || [ ! -f /workspace/debian/rules ] || [ ! -f /workspace/debian/compat ]; then
+        echo 'Error: Required files (control, rules, compat) are missing in the debian directory.' >&2
+        exit 1
+    fi
 
-    # Create control file
-    echo 'Creating control file...'
-    cat > \${DEBIAN_DIR}/control <<EOF
-Source: ${PROJECT_NAME}
-Section: python
-Priority: optional
-Maintainer: Darshan <drshnmenon7@gmail.com>
-Build-Depends: debhelper (>= 9), python3
-Standards-Version: 4.5.1
-
-Package: ${PROJECT_NAME}
-Architecture: all
-Depends: \${misc:Depends}, python3
-Description: Sample Python project packaged as a .deb
- This is a sample project used to demonstrate creating .deb packages.
-EOF
-
-    # Create rules file
-    echo 'Creating rules file...'
-    cat > \${DEBIAN_DIR}/rules <<EOF
-#!/usr/bin/make -f
-%:
-  \$@
-clean:
-	dh_clean
-build:
-	dh_auto_build
-
-binary:
-	dh_auto_install
-	dh_builddeb
-EOF
-    chmod +x \${DEBIAN_DIR}/rules
-
-    # Create compat file
-    echo 'Creating compat file...'
-    echo '12' > \${DEBIAN_DIR}/compat
-
-    # Create changelog file
-    echo 'Creating changelog file...'
-    cat > \${DEBIAN_DIR}/changelog <<EOF
-${PROJECT_NAME} (${VERSION}) unstable; urgency=low
-
-  * Initial release.
-
- -- Your Name <your-email@example.com>  $(date -R)
-EOF
-
-    # Build package
     echo 'Building the .deb package...'
     dpkg-buildpackage -us -uc -b
 

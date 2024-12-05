@@ -1,0 +1,12 @@
+Source: sampleproject
+Section: python
+Priority: optional
+Maintainer: Your Name <drshnmenon7@gmail.com>
+Build-Depends: debhelper-compat (= 12), python3, dh-python, build-essential, fakeroot
+Standards-Version: 4.5.0
+
+Package: sampleproject
+Architecture: all
+Depends: ${misc:Depends}, python3
+Description: Sample Python project packaged as a .deb
+ This is a sample project used to demonstrate creating .deb packages.
