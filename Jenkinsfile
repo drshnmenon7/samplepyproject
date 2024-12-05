@@ -32,7 +32,7 @@ pipeline {
                 script {
                     def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
                     sh """
-                    curl -u${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW} \
+                    curl -u ${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW} \
                         -T ${debFile} \
                         ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/$(basename ${debFile})
                     """
