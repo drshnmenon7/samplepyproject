@@ -52,7 +52,7 @@ EOF
 
     # Create compat file
     echo 'Creating compat file...'
-    echo '9' > \${DEBIAN_DIR}/compat
+    echo '12' > \${DEBIAN_DIR}/compat
 
     # Create changelog file
     echo 'Creating changelog file...'
