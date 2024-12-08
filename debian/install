@@ -1,0 +1,2 @@
+src/* /usr/share/samplepyproject/
+debian/samplepy-project.service /lib/systemd/system/
