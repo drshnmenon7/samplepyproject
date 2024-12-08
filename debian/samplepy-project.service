@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=sampleuser
 WorkingDirectory=/usr/share/samplepyproject
-ExecStart=/usr/bin/python3 /usr/share/samplepyproject/sample/simple.py
+ExecStart=/usr/bin/python3 -m samplepyproject
 Restart=on-failure
 
 [Install]
