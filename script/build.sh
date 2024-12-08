@@ -2,6 +2,9 @@
 
 set -e  # Exit immediately if a command exits with a non-zero status
 
+#Ensure that we are in the correct directory
+cd "$(dirname "$0")/.."
+
 # Define project details
 PROJECT_NAME="sampleproject"
 VERSION="0.1.0"
