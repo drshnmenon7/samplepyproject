@@ -33,9 +33,9 @@ pipeline {
 
                       def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
                       sh """
-                      curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_PASSWORD} \
-                        -T ${debFile} \
-                        ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/\$(basename ${debFile})
+                      curl -k -u ${ARTIFACTORY_USER}:${ARTIFACTORY_PASSWORD} -XPUT \
+                       "https://devopsdarshan7.jfrog.io/artifactory/darshu-debian-local/main/s/sampleproject/${debfile};deb.distribution=stable;deb.component=main;deb.architecture=amd64"  \
+                        -T ${debFile} 
                     """
                     }
                 }
