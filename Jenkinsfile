@@ -29,12 +29,15 @@ pipeline {
         stage('Publish to Artifactory') {
             steps {
                 script {
-                    def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
-                    sh """
-                    curl -u ${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW} \
+                    withCredentials([usernamePassword(credentialsId: 'artifactory-docker-creds', usernameVariable: 'ARTIFACTORY_USER', passwordVariable: 'ARTIFACTORY_PASSWORD')]){
+
+                      def debFile = sh(script: "ls build-output/*.deb", returnStdout: true).trim()
+                      sh """
+                      curl -u ${ARTIFACTORY_CREDENTIALS_USR}:${ARTIFACTORY_CREDENTIALS_PSW} \
                         -T ${debFile} \
                         ${ARTIFACTORY_URL}/${ARTIFACTORY_REPO}/\$(basename ${debFile})
                     """
+                    }
                 }
             }
         }
